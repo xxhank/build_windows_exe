@@ -31,9 +31,6 @@ jobs:
         run: |
           pyinstaller --onefile --windowed excel_tools_gui.py
 
-      # 5️⃣ 上传生成的 exe
-      - name: Upload EXE artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: excel_tools_gui
-          path: dist/excel_tools_gui.exe
+      # 5️⃣ 查看生成文件
+      - name: List dist folder
+        run: dir dist
