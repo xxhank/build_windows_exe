@@ -1,0 +1,39 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:   # 可以手动触发
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      # 1️⃣ 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ 安装 Python 3.13
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      # 3️⃣ 安装依赖
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller pandas
+
+      # 4️⃣ 打包 exe
+      - name: Build EXE with PyInstaller
+        run: |
+          pyinstaller --onefile --windowed excel_tools_gui.py
+
+      # 5️⃣ 上传生成的 exe
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: excel_tools_gui
+          path: dist/excel_tools_gui.exe
